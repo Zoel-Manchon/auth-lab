@@ -1,5 +1,12 @@
 # auth-lab
 
+[![CI](https://github.com/Zoel-Manchon/auth-lab/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/Zoel-Manchon/auth-lab/actions/workflows/ci.yml)
+![NestJS 11](https://img.shields.io/badge/NestJS-11-E0234E?style=flat-square&logo=nestjs&logoColor=white)
+![TypeScript 5](https://img.shields.io/badge/TypeScript-5-3178C6?style=flat-square&logo=typescript&logoColor=white)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4169E1?style=flat-square&logo=postgresql&logoColor=white)
+![auth JWT + TOTP](https://img.shields.io/badge/auth-JWT_+_TOTP-6E7681?style=flat-square)
+![risk engine zero trust](https://img.shields.io/badge/risk_engine-zero_trust-1F2A37?style=flat-square)
+
 A NestJS authentication backend paired with a **defensive attack simulator** and a
 terminal-style SOC dashboard, served behind a **TLS reverse proxy on a single
 HTTPS origin**. The backend implements JWT access/refresh with rotation, session
