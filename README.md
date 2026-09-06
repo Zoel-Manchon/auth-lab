@@ -20,6 +20,28 @@ scripted attack scenarios and asserts the defenses fire.
 
 ![attack simulator demo](docs/diagrams/demo/attack-simulator.gif)
 
+---
+
+## At a glance
+
+|  |  |
+| --- | --- |
+| **What it is** | A NestJS authentication backend, a defensive attack simulator, and a terminal-style SOC dashboard, all behind a TLS reverse proxy on a single HTTPS origin. |
+| **The one idea** | The attack scenarios are not a demo. Each one **declares the defensive behaviour the backend should exhibit**, and a non-interactive run exits non-zero if any defence failed to fire — so `pnpm sim --all` is a regression test for the auth stack, not a screenshot. |
+| **What it defends** | JWT access/refresh with rotation and JTI replay protection, session binding, device fingerprinting, TOTP MFA (mandatory for admins), a zero-trust risk engine with GeoIP and impossible-travel detection, account lockout, and an audit trail of every decision. |
+| **Single origin** | Caddy terminates TLS and is the only exposed service. The dashboard and the API share one origin, so the browser makes **no cross-origin calls at all** — which removes a whole class of CORS-shaped mistakes rather than configuring around them. |
+| **Built with** | NestJS · TypeScript · PostgreSQL · Astro · Tailwind v4 · Caddy · optional HashiCorp Vault |
+| **Run it** | `docker compose up --build` → `https://localhost` |
+
+**Contents** — [Architecture](#architecture) ·
+[Deployment topology](#deployment-topology) · [Quickstart](#quickstart-docker--one-command) ·
+[Transport security](#transport-security--hardening) ·
+[Secrets management](#secrets-management-hashicorp-vault) · [Backend](#backend) ·
+[Attack simulator](#attack-simulator) · [Tests](#tests) · [Layout](#layout) ·
+[Status](#status)
+
+---
+
 ## Architecture
 
 ```mermaid
@@ -264,3 +286,23 @@ web/                  # Astro SOC dashboard
     styles/global.css # Tailwind v4 + terminal theme
 docs/                 # DIAGRAMS.md + SCHEMAS.md + diagrams/
 ```
+
+---
+
+## Status
+
+The whole path works end to end: the stack comes up with one command, the six
+scenarios run from either the dashboard's attack range or the CLI, and each emits a
+schema-validated JSON report alongside its PASS/FAIL verdict.
+
+Scenarios covered: `refresh-race`, `token-reuse`, `session-hijack`,
+`fingerprint-spoof`, `brute-force`, `jwt-tamper`.
+
+What this deliberately is **not**: the simulator only speaks HTTP to the lab's own
+auth endpoints. It is a scenario runner, not a remote-exec tool, and it has no
+business being pointed at anything you do not own.
+
+## License
+
+MIT — see [LICENSE](LICENSE).
+
